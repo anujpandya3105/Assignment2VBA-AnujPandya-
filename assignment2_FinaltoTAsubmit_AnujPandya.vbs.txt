@@ -1,0 +1,243 @@
+Sub getTradingVolume()
+
+    Dim ws As Worksheet
+    Dim ws_name As String
+    Dim opening_price As Double
+    Dim opening_price_A As Double
+    Dim closing_price As Double
+    Dim tot_change As Double
+      
+    'Loop thru all the worksheets in this workboob
+    For Each ws In Worksheets
+    
+        'Activate each worksheet, so that control passes on to each worksheet
+        ws.Activate
+        
+        Dim tot_rows As Long
+        Dim summary_row As Integer
+        Dim ticker_total As Double
+        Dim other_row_num As Integer
+        Dim tot_percent_chg_rows As Integer
+        Dim tmp_max_ticker As String
+        Dim tmp_max As Double
+        Dim tmp_volume_max_ticker As String
+        Dim tmp_volume_max As Double
+                       
+        summary_row = 2
+        'The following statement gives us the total number of non blank Cells in Sheet
+         tot_rows = ActiveSheet.Range("A2").End(xlDown).Row
+         
+         'Hard coding the output column names
+         Cells(1, 9).Value = "Ticker"
+         Cells(1, 10).Value = "Total Volume"
+         Cells(1, 11).Value = "Total Change"
+         Cells(1, 12).Value = "Percent Change"
+        'MsgBox (tot_rows)
+        
+            
+        For row_num = 2 To tot_rows
+            'to get the opening price compare the ticker in the current row to the previous row
+            'if they are different store that cuurent row index in a variable, the third column of this row
+            'is the opening price
+            If Cells(row_num, 1).Value <> Cells(row_num - 1, 1).Value Then
+                If Cells(row_num, 1).Value <> 0 Then
+                    i = row_num
+                    opening_price = Cells(i, 3).Value
+                End If
+            End If
+                        
+            'If the ticker has changed start printing ticker summary deatils
+            If Cells(row_num, 1).Value <> Cells(row_num + 1, 1).Value Then
+                      
+                Cells(summary_row, 9).Value = Cells(row_num, 1).Value
+                'Note addition of the previous rows total volume
+                'This is the tricky part - Cells(row_num, 7).Value
+                Cells(summary_row, 10).Value = ticker_total + Cells(row_num, 7).Value
+                             
+                'Dirty code, kind off hardcoding to get opening price for the first ticker!!
+                'If ws.Name = "A" Then
+                '    If Cells(row_num, 1).Value = "A" Then
+                '        opening_price = Cells(2, 3).Value
+                '        other_row_num = row_num
+                '    Else
+                '        opening_price = Cells(row_num - other_row_num + 2, 3)
+                '        If opening_price = 0 Then
+                '
+                '           opening_price = 1
+                '        End If
+                '        'MsgBox (row_num)
+                '        'MsgBox (other_row_num)
+                '        'MsgBox (opening_price)
+                '    End If
+                'End If
+                
+                'If ws.Name = "x" Then
+                '    If Cells(row_num, 1).Value = "B" Then
+                '        opening_price = Cells(2, 3).Value
+                '        other_row_num = row_num
+                '    Else
+                '        opening_price = Cells(row_num - other_row_num + 2, 3)
+                '        If opening_price = 0 Then
+                '            opening_price = 1
+                '        End If
+                 '       'MsgBox (row_num)
+                '        'MsgBox (other_row_num)
+                '        'MsgBox (opening_price)
+                '    End If
+                'End If
+                
+                'If ws.Name = "y" Then
+                '    If Cells(row_num, 1).Value = "C" Then
+                '        opening_price = Cells(2, 3).Value
+                '        other_row_num = row_num
+                '    Else
+                '        opening_price = Cells(row_num - other_row_num + 2, 3)
+                '        If opening_price = 0 Then
+                '            opening_price = 1
+                '        End If
+                '        'MsgBox (row_num)
+                '        'MsgBox (other_row_num)
+                '        'MsgBox (opening_price)
+                '    End If
+                'End If
+                
+                'If ws.Name = "z" Then
+                '    If Cells(row_num, 1).Value = "D" Then
+                '        opening_price = Cells(2, 3).Value
+                '        other_row_num = row_num
+                '    Else
+                '        opening_price = Cells(row_num - other_row_num + 2, 3)
+                '        If opening_price = 0 Then
+                '            opening_price = 1
+                '        End If
+                '        'MsgBox (row_num)
+                '        'MsgBox (other_row_num)
+                '        'MsgBox (opening_price)
+                '    End If
+                'End If
+                
+                'If ws.Name = "z1" Then
+                '    If Cells(row_num, 1).Value = "E" Then
+                '        opening_price = Cells(2, 3).Value
+                '        other_row_num = row_num
+                '    Else
+                '        opening_price = Cells(row_num - other_row_num + 2, 3)
+                '        If opening_price = 0 Then
+                '            opening_price = 1
+                '        End If
+                '        'MsgBox (row_num)
+                '        'MsgBox (other_row_num)
+                '        'MsgBox (opening_price)
+                '    End If
+                'End If
+                
+                'If ws.Name = "z2" Then
+                '    If Cells(row_num, 1).Value = "F" Then
+                '        opening_price = Cells(2, 3).Value
+                '        other_row_num = row_num
+                '    Else
+                '        opening_price = Cells(row_num - other_row_num + 2, 3)
+                '        If opening_price = 0 Then
+                '            opening_price = 1
+                '        End If
+                '        'MsgBox (row_num)
+                '        'MsgBox (other_row_num)
+                '        'MsgBox (opening_price)
+                '    End If
+                'End If
+                
+                'If ws.Name = "z3" Then
+                '    If Cells(row_num, 1).Value = "P" Then
+                '        opening_price = Cells(2, 3).Value
+                '        other_row_num = row_num
+                '    Else
+                '        opening_price = Cells(row_num - other_row_num + 2, 3)
+                '        If opening_price = 0 Then
+                '            opening_price = 1
+                '        End If
+                '        'MsgBox (row_num)
+                '        'MsgBox (other_row_num)
+                '        'MsgBox (opening_price)
+                '    End If
+                'End If
+                
+                closing_price = Cells(row_num, 6).Value
+                'MsgBox (closing_price)
+                
+                tot_change = closing_price - opening_price
+                'for ticker PLNT the opening price is 0 casuse runtime error. making the assumption
+                'that if opening price is zero then the percent change is zero too.
+                If opening_price <> 0 Then
+                    percent_change = (tot_change / opening_price) * 100
+                Else
+                    percent_change = 0
+                End If
+                
+                Cells(summary_row, 11).Value = tot_change
+                If tot_change <= 0 Then
+                    Range("K" & summary_row).Interior.Color = vbRed
+                Else
+                    Range("K" & summary_row).Interior.Color = vbGreen
+                End If
+                
+                Cells(summary_row, 12).Value = percent_change
+                
+                'increment the summary row for the next ticker symbol
+                summary_row = summary_row + 1
+                ticker_total = 0
+           
+            Else
+                'If the ticker has not changed sum up the volumes of the ticker
+                ticker_total = ticker_total + Cells(row_num, 7).Value
+            End If
+            
+        Next row_num
+      
+        Cells(2, 15).Value = "Ticker"
+        Cells(2, 16).Value = "Value"
+        
+        'Find Greatest percent change rows
+        tot_percent_chg_rows = ActiveSheet.Range("L2").End(xlDown).Row
+        
+        tmp_max = Cells(2, 12).Value
+        tmp_max_ticker = Cells(2, 9).Value
+      
+        tmp_min = Cells(2, 12).Value
+        tmp_min_ticker = Cells(2, 9).Value
+        
+        tmp_volume_max = Cells(2, 10).Value
+        tmp_volume_max_ticker = Cells(2, 10).Value
+        
+        For percent_rows = 3 To tot_percent_chg_rows
+            'If Cells(percent_rows, 12).Value > Cells(percent_rows + 1, 12).Value Then
+            If Cells(percent_rows, 12).Value > tmp_max Then
+                tmp_max = Cells(percent_rows, 12).Value
+                tmp_max_ticker = Cells(percent_rows, 9).Value
+            End If
+            
+            If Cells(percent_rows, 12).Value < tmp_min Then
+                tmp_min = Cells(percent_rows, 12).Value
+                tmp_min_ticker = Cells(percent_rows, 9).Value
+            End If
+            
+            If Cells(percent_rows, 10).Value > tmp_volume_max Then
+                tmp_volume_max = Cells(percent_rows, 10).Value
+                tmp_volume_max_ticker = Cells(percent_rows, 9).Value
+            End If
+        Next percent_rows
+        
+        Cells(2, 14).Value = "Greatest % Change"
+        Cells(2, 15).Value = tmp_max_ticker
+        Cells(2, 16).Value = tmp_max
+        
+        Cells(3, 14).Value = "Least % Change"
+        Cells(3, 15).Value = tmp_min_ticker
+        Cells(3, 16).Value = tmp_min
+        
+        Cells(4, 14).Value = "Greatest Total Volume"
+        Cells(4, 15).Value = tmp_volume_max_ticker
+        Cells(4, 16).Value = tmp_volume_max
+        
+    Next ws
+End Sub
+
